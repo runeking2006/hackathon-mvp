@@ -65,6 +65,12 @@ if "records" not in st.session_state:
 
 uploaded_file = st.file_uploader("Upload Document", type=["png", "jpg", "jpeg"])
 
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+
+    st.subheader("Uploaded Document Preview")
+    st.image(image, use_container_width=True)
+
 process = st.button("Process Document")
 
 if uploaded_file is not None and process:
