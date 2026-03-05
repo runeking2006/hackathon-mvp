@@ -74,3 +74,7 @@ streamlit run app.py
 * Document digitization
 * Enterprise document management
 * Secure data extraction from scanned records
+
+
+## Live Demo
+https://runeking2006-hackathon-mvp-app-sjbwov.streamlit.app/
