@@ -13,6 +13,13 @@ st.set_page_config(page_title="Enterprise Document Intelligence", page_icon="ðŸ“
 st.title("Enterprise Document Intelligence")
 st.caption("AI-powered OCR, entity extraction, validation, and secure enterprise document processing.")
 
+st.markdown(
+    """
+    <meta name="google-site-verification" content="abc123xyz" />
+    """,
+    unsafe_allow_html=True
+)
+
 # Inline CSS(cascading styles sheet)
 st.markdown("""
 <style>
