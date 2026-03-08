@@ -263,13 +263,14 @@ if records:
         st.line_chart(df["ocr_confidence"])
 
     if "amount" in df:
-        st.metric("Total Amount Extracted",df["amount"].sum())
+        total_amount = pd.to_numeric(df["amount"], errors="coerce").fillna(0).sum()
+        st.metric("Total Amount Extracted", round(total_amount,2))
 
     csv=df.to_csv(index=False)
 
     st.download_button(
-    "Download All Records CSV",
-    csv,
-    "enterprise_records.csv",
-    "text/csv"
+        "Download All Records CSV",
+        csv,
+        "enterprise_records.csv",
+        "text/csv"
     )
