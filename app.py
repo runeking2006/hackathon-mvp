@@ -23,39 +23,99 @@ unsafe_allow_html=True
 st.markdown("""
 <style>
 
-/* Use Streamlit theme colors so it works in both modes */
+/* Use theme colors (works for light & dark mode) */
 .stApp {
     background-color: var(--background-color);
 }
 
-/* Title styling */
+/* Title */
 h1 {
     text-align: center;
     color: var(--text-color);
+    font-weight: 700;
+}
+
+/* Section headers */
+h2, h3 {
+    color: var(--text-color);
+    border-bottom: 1px solid rgba(128,128,128,0.2);
+    padding-bottom: 4px;
 }
 
 /* Buttons */
 .stButton>button{
-    background-color: #1f77b4;
-    color: white;
-    border-radius: 8px;
-    padding: 8px 16px;
-    font-weight: bold;
-    border: none;
+    background: linear-gradient(135deg,#1f77b4,#145a86);
+    color:white;
+    border:none;
+    border-radius:10px;
+    padding:10px 18px;
+    font-weight:600;
+    transition: all 0.2s ease;
 }
 
 .stButton>button:hover{
-    background-color:#145a86;
+    transform: translateY(-2px);
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* Make tables look good in dark mode */
-[data-testid="stDataFrame"] {
+/* Metric cards */
+[data-testid="stMetric"] {
+    background-color: rgba(128,128,128,0.08);
+    padding:12px;
     border-radius:10px;
 }
 
-/* Metrics */
-[data-testid="stMetricValue"] {
+/* Dataframe styling */
+[data-testid="stDataFrame"] {
+    border-radius:12px;
+    border:1px solid rgba(128,128,128,0.2);
+}
+
+/* File uploader */
+[data-testid="stFileUploader"] {
+    border:2px dashed rgba(128,128,128,0.4);
+    padding:12px;
+    border-radius:10px;
+}
+
+/* Images */
+img {
+    border-radius:10px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+
+.ai-loader {
+    display:flex;
+    align-items:center;
+    gap:10px;
     font-weight:600;
+    font-size:16px;
+}
+
+.ai-dot {
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#1f77b4;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.ai-dot:nth-child(2){
+    animation-delay:0.2s;
+}
+
+.ai-dot:nth-child(3){
+    animation-delay:0.4s;
+}
+
+@keyframes bounce {
+    0%,80%,100% { transform:scale(0); }
+    40% { transform:scale(1); }
 }
 
 </style>
@@ -118,7 +178,17 @@ if uploaded_files and process:
             st.subheader("Document Preview")
             st.image(image,use_container_width=True)
 
-        with st.spinner("Running OCR..."):
+        with st.spinner("Processing Document..."):
+
+            st.markdown("""
+            <div class="ai-loader">
+                AI Processing
+                <div class="ai-dot"></div>
+                <div class="ai-dot"></div>
+                <div class="ai-dot"></div>
+            </div>
+            """, unsafe_allow_html=True)
+            
             results = reader.readtext(img_array)
 
         text="\n".join([r[1] for r in results])
