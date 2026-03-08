@@ -37,7 +37,7 @@ font-weight:bold;
 # ---------------- OCR MODEL ----------------
 @st.cache_resource
 def load_ocr():
-    return easyocr.Reader(['en','ta','hi'])
+    return easyocr.Reader(['en','ta'], gpu=False)
 
 reader = load_ocr()
 
