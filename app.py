@@ -22,15 +22,42 @@ unsafe_allow_html=True
 # ---------------- CSS ----------------
 st.markdown("""
 <style>
-.stApp {background-color:#f5f7fb;}
-h1 {color:#1f4e79;text-align:center;}
-.stButton>button{
-background-color:#1f77b4;
-color:white;
-border-radius:8px;
-padding:8px 16px;
-font-weight:bold;
+
+/* Use Streamlit theme colors so it works in both modes */
+.stApp {
+    background-color: var(--background-color);
 }
+
+/* Title styling */
+h1 {
+    text-align: center;
+    color: var(--text-color);
+}
+
+/* Buttons */
+.stButton>button{
+    background-color: #1f77b4;
+    color: white;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: bold;
+    border: none;
+}
+
+.stButton>button:hover{
+    background-color:#145a86;
+}
+
+/* Make tables look good in dark mode */
+[data-testid="stDataFrame"] {
+    border-radius:10px;
+}
+
+/* Metrics */
+[data-testid="stMetricValue"] {
+    font-weight:600;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
