@@ -235,13 +235,14 @@ if query:
     ]
 
 # pagination
-page_size=10
-page=st.number_input("Page",1,max(1,len(filtered)//page_size+1),1)
+page_size = 10
+page = st.number_input("Page", 1, max(1, len(filtered)//page_size + 1), 1)
 
-start=(page-1)*page_size
-end=start+page_size
+start = (page-1) * page_size
+end = start + page_size
 
-st.dataframe(filtered[start:end])
+display_df = pd.DataFrame(filtered[start:end]).astype(str)
+st.dataframe(display_df)
 
 # ---------------- ANALYTICS ----------------
 st.subheader("Analytics")
