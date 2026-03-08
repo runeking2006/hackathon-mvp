@@ -83,11 +83,8 @@ if uploaded_files and process:
         with col1:
 
             image = Image.open(uploaded_file)
-
-            # auto orientation
             image = ImageOps.exif_transpose(image)
 
-            # preprocessing
             gray = image.convert("L")
             img_array = np.array(gray)
 
@@ -95,7 +92,6 @@ if uploaded_files and process:
             st.image(image,use_container_width=True)
 
         with st.spinner("Running OCR..."):
-
             results = reader.readtext(img_array)
 
         text="\n".join([r[1] for r in results])
@@ -119,11 +115,8 @@ if uploaded_files and process:
         draw = ImageDraw.Draw(image)
 
         for (bbox,text_detected,prob) in results:
-
             p0,p1,p2,p3=bbox
-
             draw.line([tuple(p0),tuple(p1),tuple(p2),tuple(p3),tuple(p0)],width=3)
-
             draw.text(tuple(p0),f"{text_detected} ({round(prob*100)}%)")
 
         st.subheader("Detected Text Regions")
@@ -164,9 +157,9 @@ if uploaded_files and process:
         # ---------------- ENTITY EXTRACTION ----------------
         name=re.findall(r"(?:name|customer|client|buyer|ship to|bill to|vendor)[^\n:]*[:\s]*([A-Za-z ]+)",text,re.I)
 
-        invoice_no=re.findall(r"(?:invoice|bill)[^\n]*?(?:no|number|#)?[:\s]*([A-Z0-9-]+)",text,re.I)
+        invoice_no=re.findall(r"(?:invoice\s*(?:no|number|#))[:\s]*([A-Z0-9-]+)",text,re.I)
 
-        amount=re.findall(r"(?:₹|\$|INR)?\s?([\d,]+\.\d+|[\d,]+)",text)
+        amount=re.findall(r"(?:total|amount|grand total)[^\d]*([\d,]+(?:\.\d{2})?)",text.lower())
 
         date=re.findall(r"\d{2}[/-]\d{2}[/-]\d{4}|\d{4}[/-]\d{2}[/-]\d{2}",text)
 
@@ -187,32 +180,41 @@ if uploaded_files and process:
 
         masked_pan=["XXXXX"+p[-4:] for p in pan]
 
+        # ---------------- CLEAN VALUES ----------------
+        name=name[0] if name else ""
+        invoice_no=invoice_no[0] if invoice_no else ""
+        amount=float(amount[0].replace(",","")) if amount else 0
+        date=date[0] if date else ""
+        phone_masked=masked_phone[0] if masked_phone else ""
+        email_masked=masked_email[0] if masked_email else ""
+        aadhaar_masked=masked_aadhaar[0] if masked_aadhaar else ""
+        pan_masked=masked_pan[0] if masked_pan else ""
+
         # ---------------- STRUCTURED DATA ----------------
         data={
         "timestamp":str(datetime.now()),
         "document_type":doc_type,
         "name":name,
         "invoice_number":invoice_no,
-        "amount":[float(a.replace(",","")) for a in amount] if amount else [],
+        "amount":amount,
         "date":date,
-        "phone_masked":masked_phone,
-        "email_masked":masked_email,
-        "aadhaar_masked":masked_aadhaar,
-        "pan_masked":masked_pan,
+        "phone_masked":phone_masked,
+        "email_masked":email_masked,
+        "aadhaar_masked":aadhaar_masked,
+        "pan_masked":pan_masked,
         "ocr_confidence":round(avg_conf*100,2)
         }
 
         # duplicate prevention
         existing=[r.get("invoice_number") for r in st.session_state.records]
 
-        if data["invoice_number"] not in existing:
+        if invoice_no not in existing:
             st.session_state.records.append(data)
             save_records(st.session_state.records)
 
         st.subheader("Structured Output")
         st.json(data)
 
-        # processing time
         end=time.time()
         st.info(f"Processing Time: {round(end-start,2)} sec")
 
@@ -239,7 +241,7 @@ page=st.number_input("Page",1,max(1,len(filtered)//page_size+1),1)
 start=(page-1)*page_size
 end=start+page_size
 
-st.table(filtered[start:end])
+st.dataframe(filtered[start:end])
 
 # ---------------- ANALYTICS ----------------
 st.subheader("Analytics")
@@ -261,8 +263,7 @@ if records:
         st.line_chart(df["ocr_confidence"])
 
     if "amount" in df:
-        amounts=[sum(a) if isinstance(a,list) else 0 for a in df["amount"]]
-        st.metric("Total Amount Extracted",sum(amounts))
+        st.metric("Total Amount Extracted",df["amount"].sum())
 
     csv=df.to_csv(index=False)
 
