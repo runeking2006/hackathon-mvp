@@ -1,5 +1,11 @@
 # Enterprise Document Intelligence & Secure Data Extraction Platform
 
+## Live Demo
+
+Try the application here:
+
+https://runeking2006-hackathon-mvp-app-sjbwov.streamlit.app/
+
 ## Overview
 
 Enterprise organizations handle large volumes of documents such as invoices, contracts, forms, and identity records. Manual extraction of information from these documents is slow, error-prone, and can expose sensitive data.
@@ -105,9 +111,3 @@ streamlit run app.py
 * Business process automation
 
 ---
-
-## Live Demo
-
-Try the application here:
-
-https://runeking2006-hackathon-mvp-app-sjbwov.streamlit.app/
