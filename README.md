@@ -2,79 +2,112 @@
 
 ## Overview
 
-This project demonstrates an AI-powered system that automatically processes scanned enterprise documents such as invoices, contracts, and forms. The system extracts important information from uploaded documents using OCR and converts it into structured data.
+Enterprise organizations handle large volumes of documents such as invoices, contracts, forms, and identity records. Manual extraction of information from these documents is slow, error-prone, and can expose sensitive data.
 
-The platform reduces manual effort, improves accuracy, and protects sensitive information through automated validation and masking techniques.
+This project demonstrates an **AI-powered document processing platform** that automatically extracts structured information from scanned documents using Optical Character Recognition (OCR).
 
-## Features
+The system analyzes uploaded documents, extracts key entities, validates the extracted information, masks sensitive data, and converts the results into structured records that can be downloaded as **CSV files**.
+
+---
+
+## Key Features
 
 * OCR-based text extraction from scanned documents
-* Automatic document classification (Invoice, Contract, Form, ID Document)
-* Key information extraction (Name, Amount, Date, Invoice Number, Phone Number)
+* Automatic document classification
+
+  * Invoice
+  * Contract
+  * Form
+  * ID Document
+* Entity extraction from documents:
+
+  * Name
+  * Invoice Number
+  * Amount
+  * Date
+  * Phone Number
+  * Email
 * Sensitive data masking for privacy protection
-* Validation of extracted data using predefined rules
-* Structured JSON output for easy storage and integration
-* Downloadable structured records
+* Rule-based validation of extracted data
+* Downloadable structured **CSV records**
 * Searchable dashboard for processed documents
-* Simple analytics showing processed document statistics
+* Analytics showing document statistics and OCR confidence
+
+---
 
 ## Technologies Used
 
-* Python
-* Streamlit
-* EasyOCR
-* NumPy
-* Pillow (PIL)
-* Regular Expressions (Regex)
+* **Python**
+* **Streamlit** – Interactive web interface
+* **EasyOCR** – Optical Character Recognition
+* **NumPy** – Image data processing
+* **Pillow (PIL)** – Image handling
+* **Pandas** – Data analysis and CSV generation
+* **Regular Expressions (Regex)** – Entity extraction
+
+---
 
 ## Installation
 
-1. Clone the repository
+### 1. Clone the repository
 
 ```
 git clone <your-repository-link>
 cd <repository-folder>
 ```
 
-2. Install required dependencies
+### 2. Install dependencies
 
 ```
 pip install -r requirements.txt
 ```
 
-3. Run the application
+### 3. Run the application
 
 ```
 streamlit run app.py
 ```
 
+---
+
 ## Usage
 
 1. Upload a scanned document (PNG, JPG, or JPEG).
-2. Click **Process Document**.
-3. The system performs OCR and extracts relevant data.
-4. Extracted fields are validated and sensitive information is masked.
-5. The structured data is displayed and can be downloaded as a JSON file.
-6. Processed documents can be searched through the dashboard.
+2. Click **Process Documents**.
+3. The system performs OCR and extracts text from the document.
+4. Key fields such as name, amount, and invoice number are automatically detected.
+5. Sensitive information is masked for security.
+6. Extracted records appear in the dashboard.
+7. Processed data can be downloaded as a **CSV file**.
+
+---
 
 ## Project Workflow
 
 1. Document Upload
-2. OCR Text Extraction
-3. Document Classification
-4. Entity Extraction
-5. Data Validation
-6. Sensitive Data Masking
-7. Structured JSON Generation
-8. Dashboard Monitoring & Search
+2. Image Preprocessing
+3. OCR Text Extraction
+4. Document Classification
+5. Entity Extraction
+6. Data Validation
+7. Sensitive Data Masking
+8. Structured Data Generation (CSV)
+9. Dashboard Monitoring & Search
+
+---
 
 ## Applications
 
-* Invoice processing automation
-* Document digitization
-* Enterprise document management
-* Secure data extraction from scanned records
+* Automated invoice processing
+* Document digitization and archiving
+* Enterprise document management systems
+* Secure data extraction from scanned documents
+* Business process automation
 
+---
 
 ## Live Demo
+
+Try the application here:
+
 https://runeking2006-hackathon-mvp-app-sjbwov.streamlit.app/
